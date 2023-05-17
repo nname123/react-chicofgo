@@ -13,28 +13,19 @@ const ShowPic = (props) => {
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   useEffect(() => {
-    const fetchImages = async (index) => {
+    const fetchImages = (index) => {
+      const imagePaths = [];
       try {
-        const response = await fetch(
-          `http://localhost:3001/api/images/productImg/coffee_${product_id}/coffee_${product_id}-${index}.png`
-        );
-        if (response.status !== 200) {
-          // console.log(imageUrls);
-          // console.log(Array.from(imageUrls));
-          return;
-        }
-        const url = response.url;
-        if (!imageUrls.includes(url)) {
-          // setImageUrls((prevUrls) => [...prevUrls, url]);
-          setImageUrls((prevUrls) => [...new Set([...prevUrls, url])]);
-        }
-        fetchImages(index + 1);
+        let imagePath = require(`../../../../Img/ProductsTest/coffee_${product_id}/coffee_${product_id}-${index}.png`);
+        imagePaths.push(imagePath);
+        setImageUrls((prevUrls) => [...new Set([...prevUrls, imagePath])]);
       } catch (error) {
-        console.error(error);
+        // 沒有就跳出
+        return;
       }
+      fetchImages(index + 1);
     };
     fetchImages(1);
-    // console.log(imageUrls);
   }, []);
 
   const settingsMain = {

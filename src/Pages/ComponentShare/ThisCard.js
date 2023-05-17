@@ -36,9 +36,9 @@ function ThisCard(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const response = productList.find((item) => item.id === String(product_id));
+    const response = productList.find((item) => item.product_id === product_id);
     if (response && response.name.length > 10) {
-      let chunkSize = 11;
+      let chunkSize = 10;
       let inputString = response.name;
       let title = [];
       for (let i = 0; i < inputString.length; i += chunkSize) {
@@ -46,11 +46,11 @@ function ThisCard(props) {
         title.push(chunk);
       }
 
-      if (title.length >= 2) {
+      if (title.length > 2) {
         title[2] += '...';
         title.length = 3;
       } else if (title.length === 2) {
-        title[1] += '...';
+        title[2] = '...';
       }
       setTitle(title);
       setBackendData({ ...response, rating: parseInt(response.rating) });

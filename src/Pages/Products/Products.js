@@ -7,11 +7,11 @@ import { Button, Form, InputGroup, Col, Row, Container } from 'react-bootstrap';
 const Products = () => {
   return (
     <Container fluid>
-      <Row className="justify-content-between">
-        <Col className="col-auto bg-light bg-gradient shadow-sm">
+      <Row className="justify-content-evenly">
+        <Col className="col-auto bg-light bg-gradient shadow-sm me-auto">
           <ProductFilter />
         </Col>
-        <Col className="col-10">
+        <Col className="w-100">
           <List />
         </Col>
       </Row>

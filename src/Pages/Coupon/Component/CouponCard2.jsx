@@ -13,7 +13,7 @@ function CouponCard2(props) {
     // 讀取並檢查某一值是否在陣列中
     const myCoupon = JSON.parse(localStorage.getItem('MyCoupon')) || []; // 先讀取已存在的資料，如果不存在則初始化為空陣列
     const isExist = myCoupon.includes(targetItem); // 檢查該項目是否在陣列中
-    console.log(isExist); // 如果該項目在陣列中，則輸出 true，否則輸出 false
+    // console.log(isExist); // 如果該項目在陣列中，則輸出 true，否則輸出 false
     if (isExist) {
       setBtnText('已領取');
     } else {
@@ -29,16 +29,14 @@ function CouponCard2(props) {
         height: props.height,
       }}
     >
-      <Row
-        className={`text-nowrap align-items-center justify-content-center text-center`}
-      >
-        <Col className={`col p-2 p-md-0 text-end`}>
-          <h3 className={`my-auto`}>{props.title}</h3>
-        </Col>
-        <Col className={`col-4 col-md-5 ps-2 ps-md-4 text-start`}>
+      <Row className={``}>
+        <Col
+          className={`d-flex align-items-baseline justify-content-center px-5 text-nowrap`}
+        >
+          <h3 className={`me-3`}>{props.title}</h3>
           <Button
             variant="chicofgo-green"
-            className={`p-1 px-3`}
+            className={`py-1 px-3   ms-xl-auto`}
             size="sm"
             // color="light"
             type="button"
@@ -58,6 +56,8 @@ function CouponCard2(props) {
             {btnText}
           </Button>
         </Col>
+        {/* <Col className={`col-auto`}></Col> */}
+        {/* <Col className="col-auto offset-2"></Col> */}
       </Row>
     </Container>
   );

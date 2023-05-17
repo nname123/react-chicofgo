@@ -26,6 +26,7 @@ import {
   BsFillCartFill,
 } from 'react-icons/bs';
 import MoreCard from '../../ComponentShare/MoreCard';
+import { productList } from '../../../Config/ProductConfig';
 
 const ProductDetail = () => {
   const { isLoggedIn, userid } = useAuth();
@@ -132,6 +133,8 @@ const ProductDetail = () => {
 
   // 撈商品資料
   async function getProductData() {
+    const response = productList.find((item) => item.product_id === product_id);
+    setBackendData(response);
     // try {
     //   let response = await axios.get(
     //     `http://localhost:3001/api/products/productDetail/${product_id}`
@@ -322,7 +325,7 @@ const ProductDetail = () => {
                     >
                       {isLoading ? (
                         <div
-                          class="d-flex justify-content-center align-items-center rounded-4"
+                          className="d-flex justify-content-center align-items-center rounded-4"
                           style={{
                             height: '530px',
                             backgroundColor: 'rgb(254,254,254)',
@@ -338,7 +341,7 @@ const ProductDetail = () => {
                   <Col className={`${style.textArea} col-6 chicofgo-font px-4`}>
                     {isLoading ? (
                       <div
-                        class="d-flex justify-content-center align-items-center"
+                        className="d-flex justify-content-center align-items-center"
                         style={{ height: '530px' }}
                       >
                         <Spinner animation="border" variant="secondary" />
@@ -390,9 +393,9 @@ const ProductDetail = () => {
                           <Col className={`col-auto`}>
                             <p>數量:</p>
                           </Col>
-                          <Col className={`col-3`}>
+                          <Col className={`col`}>
                             {/* <span>{backendData.price}</span> */}
-                            <span>
+                            <span className="">
                               <InputGroup
                                 size="sm"
                                 className="m-0 p-0 overflow-visible"
@@ -412,7 +415,6 @@ const ProductDetail = () => {
                                 </Button>
                                 <Form.Control
                                   type="text"
-                                  defaultValue="1"
                                   className={`text-center p-0`}
                                   value={productAmount}
                                   onChange={handleChange}
@@ -433,22 +435,24 @@ const ProductDetail = () => {
                               </InputGroup>
                             </span>
                           </Col>
+                          <Col className="w-100 d-none d-lg-inline"></Col>
                         </Row>
-                        <Row className={`justify-content-evenly my-3 `}>
-                          <Col className={`d-grid`}>
+                        <Row className={`my-2`}>
+                          <Col
+                            className={`d-grid gap-2 d-lg-block mx-auto chicofgo_white_font `}
+                          >
                             <Button
                               variant="chicofgo-dark"
-                              className={`d-flex align-items-center justify-content-center chicofgo_white_font`}
+                              className={`me-0 me-lg-3`}
                               onClick={sendCollect}
                             >
                               <BsSuitHeartFill />
                               &ensp;加入收藏
                             </Button>
-                          </Col>
-                          <Col className={`d-grid`}>
+
                             <Button
                               variant="chicofgo-green"
-                              className={`d-flex align-items-center justify-content-center chicofgo_white_font`}
+                              className={``}
                               onClick={sendCart}
                             >
                               <BsFillCartFill />
@@ -628,13 +632,15 @@ const ProductDetail = () => {
               </Col>
               <Col className={`p-4 pt-3`}>
                 {backendReview.length <= 0 ? (
-                  <Row>
-                    <h5
-                      className={`py-5 chicofgo_white rounded-5 chicofgo-font-700 chicofgo_green_font text-center`}
-                    >
-                      此商品暫無評論
-                    </h5>
-                  </Row>
+                  <>
+                    <Row>
+                      <h5
+                        className={`py-5 chicofgo_white rounded-5 chicofgo-font-700 chicofgo_green_font text-center`}
+                      >
+                        此商品暫無評論
+                      </h5>
+                    </Row>
+                  </>
                 ) : (
                   backendReview.map((review) => {
                     return (

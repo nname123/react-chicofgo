@@ -215,7 +215,7 @@ function ProductFilter() {
   };
 
   useEffect(() => {
-    const { theSearch, ...otherCategories } = chooseCategory;
+    const { theSearches, ...otherCategories } = chooseCategory;
     if (Object.values(otherCategories).every((arr) => arr.length === 0)) {
       // console.log('沒篩選資料，除了theSearch以外');
       return;
@@ -302,7 +302,7 @@ function ProductFilter() {
                   if (theSearch !== '') {
                     setChooseCategory((prev) => ({
                       ...prev,
-                      theSearch: [],
+                      theSearches: [],
                     }));
                   }
                 }}
@@ -323,7 +323,7 @@ function ProductFilter() {
                 onClick={() =>
                   setChooseCategory((prev) => ({
                     ...prev,
-                    theSearch: [theSearch],
+                    theSearches: [theSearch],
                   }))
                 }
               >
@@ -352,6 +352,7 @@ function ProductFilter() {
                     packages: [],
                     origins: [],
                     theStyles: [],
+                    theSearches: [theSearch],
                   });
                   setCheckedMap({
                     brands: {},

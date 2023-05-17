@@ -32,42 +32,56 @@ function List() {
 
   // 拿資料
   function getData() {
-    let response = productList.slice((page - 1) * 16, page * 16);
-    // console.log('chooseCategory', chooseCategory);
-    // const filteredProductList = productList.filter((item) => {
-    // return chooseCategory.brands.includes(item.brand);
-    // &&
-    // chooseCategory.packages.includes(item.package || '') &&
-    // chooseCategory.types.includes(item.type || '') &&
-    // chooseCategory.origins.includes(item.place_of_orgin || '')
-    // });
+    const filteredList = productList.filter((product) => {
+      const { name, brand, type, product_package, place, style } = product;
+      const { brands, types, packages, origins, theStyles, theSearches } =
+        chooseCategory;
 
-    // console.log('filteredProductList', filteredProductList);
+      // 品牌檢查
+      if (brands.length > 0 && !brands.includes(brand)) {
+        return false;
+      }
+      // 類型
+      if (types.length > 0 && !types.includes(type)) {
+        return false;
+      }
+      // 包裝檢查
+      if (packages.length > 0 && !packages.includes(product_package)) {
+        return false;
+      }
+      // 產地檢查
+      if (origins.length > 0 && !origins.includes(place)) {
+        return false;
+      }
 
-    // let response = await axios.get(
-    //   `http://localhost:3001/api/products/?page=${page}`,
-    //   {
-    //     params: {
-    //       // thePage: page,
-    //       setFilter: chooseCategory || '',
-    //     },
-    //   }
-    // );
-    // console.log('response', response.data);
+      // 風味檢查
+      if (theStyles.length > 0 && !theStyles.includes(...style)) {
+        return false;
+      }
+      // 關鍵字檢查
+      if (theSearches.length > 0) {
+        const matchedTerms = theSearches.some((keyword) =>
+          name.includes(keyword)
+        );
+        if (!matchedTerms) {
+          return false;
+        }
+      }
+      return true;
+    });
+    // console.log('filteredList', filteredList);
+    let response = filteredList.slice((page - 1) * 16, page * 16);
 
-    // console.log('setData', response);
     //刪掉id=0的空白項目
     const filteredData = response.filter((item) => item.id !== 0);
-
     //填充不足的項目
     const targetLength = 16;
     const paddingCount = targetLength - filteredData.length;
     const paddingData = Array.from({ length: paddingCount }, () => ({ id: 0 }));
     const filledData = filteredData.concat(paddingData);
     // console.log('filledData', filledData);
-
     setData(filledData);
-    setTotalPage(Math.ceil(productList.length / 16));
+    setTotalPage(Math.ceil(filteredList.length / 16));
   }
 
   useEffect(() => {
@@ -198,18 +212,15 @@ function List() {
   return (
     <Container>
       <Row
-        className="px-4"
-        // style={{ minHeight: '1470px' }}
+        className={`mt-3 px-0 px-md-5 row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5 g-3 `}
       >
         {data.map((item) => {
           return (
             <Col
               key={uuidv4()}
-              className={`col-6 col-md-4 col-lg-3 col-xxl-2 my-2 my-xxl-1 ${
-                item.id <= 0 ? 'invisible' : ''
-              }`}
+              className={` ${item.id <= 0 ? 'invisible' : ''}`}
             >
-              <ThisCard product_id={item.id} />
+              <ThisCard product_id={item.product_id} />
             </Col>
           );
         })}

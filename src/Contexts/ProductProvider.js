@@ -16,8 +16,7 @@ function ProductProvider(props) {
     packages: [],
     origins: [],
     theStyles: [],
-    theSearch: [],
-
+    theSearches: [],
   });
 
   return (
