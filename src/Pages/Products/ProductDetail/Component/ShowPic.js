@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Slider from 'react-slick';
 import { Container, Image, Row } from 'react-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
@@ -26,7 +26,7 @@ const ShowPic = (props) => {
       fetchImages(index + 1);
     };
     fetchImages(1);
-  }, []);
+  }, [product_id]);
 
   const settingsMain = {
     dots: false,
@@ -36,7 +36,7 @@ const ShowPic = (props) => {
     slidesToScroll: 1,
     fade: true,
     asNavFor: nav2,
-    initialSlide: 1,
+    initialSlide: 0,
     arrows: false,
   };
 

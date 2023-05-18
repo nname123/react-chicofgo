@@ -12,13 +12,18 @@ import {
   Spinner,
 } from 'react-bootstrap';
 // import axios from 'axios';
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Contexts/AuthContext';
 import { productList } from '../../Config/ProductConfig';
+import { useShoppingCart } from '../../Contexts/ShoppingCartProvider';
 
 function ThisCard(props) {
-  const { isLoggedIn, userid } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, setUsername, setUserid, setUserRank } =
+    useAuth();
+  const { cartList, setCartList, collectList, setCollectList } =
+    useShoppingCart();
+
   const { product_id, goToUrl } = props;
   const redirectTo = goToUrl || '';
   const [backendData, setBackendData] = useState([]);
@@ -57,104 +62,114 @@ function ThisCard(props) {
     }
   }, []);
 
+  // 登入
+  function handleLogIn() {
+    setIsLoggedIn(true);
+    setUserid('12345');
+    setUsername('王大明');
+    setUserRank('1');
+    handleCloseC();
+  }
+
   //加入購物車
-  async function sendCart() {
-    // if (isLoggedIn) {
-    //   try {
-    //     let response = await axios.post(
-    //       'http://localhost:3001/api/products/sendCart',
-    //       {
-    //         cartProductId: backendData.product_id,
-    //         cartUserId: userid,
-    //         cartPrice: backendData.price,
-    //         cartQuantity: 1,
-    //       }
-    //     );
-    //     if (response.data.result === 'ok') {
-    //       setIsShow(true);
-    //       setShowMsg('成功加入購物車');
-    //     } else if (response.data.result === 'been added') {
-    //       setIsShow(true);
-    //       setShowMsg('已加入過購物車囉，看看其他商品吧');
-    //     } else {
-    //       setIsShow(true);
-    //       setShowMsg('加入失敗');
-    //     }
-    //     console.log(response.data);
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // } else {
-    //   setIsShow(true);
-    // }
+  function sendCart() {
+    if (isLoggedIn) {
+      let newShoppingCartId = 1;
+      if (Array.isArray(cartList) && cartList.length > 0) {
+        const isProductExist = cartList.some(
+          (item) => item.product_id === backendData.product_id
+        );
+        if (isProductExist) {
+          setShowMsg('已加入過購物車囉，看看其他商品吧');
+          setIsShow(true);
+          return;
+        }
+        newShoppingCartId = cartList[cartList.length - 1].shoppingcart_id + 1;
+      }
+
+      // 處理規格
+      let string = backendData.detail;
+      let descSubstring = string.substring(
+        string.indexOf('：') + 1,
+        string.indexOf('<br>')
+      );
+      if (descSubstring.length <= 0) {
+        descSubstring = string.substring(0, string.indexOf('<br>'));
+      }
+
+      const newItem = {
+        shoppingcart_id: newShoppingCartId,
+        // 其他屬性設定
+        product_id: backendData.product_id,
+        brandname: backendData.brand,
+        title: backendData.name,
+        desc: descSubstring,
+        quantity: 1,
+        price: backendData.price,
+        checked: false,
+      };
+      setCartList((prevCartList) => [...prevCartList, newItem]);
+      setShowMsg('成功加入購物車');
+      setIsShow(true);
+    } else {
+      setIsShow(true);
+    }
+    // console.log('通過', cartList);
   }
   //加入收藏
-  async function sendCollect() {
-    // if (isLoggedIn) {
-    //   try {
-    //     let response = await axios.post(
-    //       'http://localhost:3001/api/members/sendUserCollect',
-    //       {
-    //         product_id: backendData.product_id,
-    //         member_id: userid,
-    //       }
-    //     );
-    //     if (
-    //       response.data.result === 'ok' ||
-    //       response.data.result === 'rejoin'
-    //     ) {
-    //       setAskDelectShowC(false);
-    //       setIsShowC(true);
-    //       setShowMsgC('成功加入收藏');
-    //     } else if (response.data.result === 'been added') {
-    //       setIsShowC(true);
-    //       setAskDelectShowC(true);
-    //       setShowMsgC('已加入過收藏囉，看看其他商品吧');
-    //     } else {
-    //       setAskDelectShowC(false);
-    //       setIsShowC(true);
-    //       setShowMsgC('加入失敗');
-    //     }
-    //     console.log(response.data);
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // } else {
-    //   setIsShowC(true);
-    // }
+  function sendCollect() {
+    if (isLoggedIn) {
+      if (Array.isArray(collectList) && collectList.length > 0) {
+        const isCollectExist = collectList.includes(backendData.product_id);
+        if (isCollectExist) {
+          setShowMsgC('已加入過收藏囉，看看其他商品吧');
+          setIsShowC(true);
+          setAskDelectShowC(true);
+          return;
+        }
+      }
+
+      setCollectList((prev) => [...prev, backendData.product_id]);
+      setAskDelectShowC(false);
+      setIsShowC(true);
+      setShowMsgC('成功加入收藏');
+      // console.log('collectList', collectList);
+    } else {
+      setIsShowC(true);
+    }
   }
   // 刪除收藏
-  async function handleDeleteCollect() {
-    // try {
-    //   let response = await axios.post(
-    //     'http://localhost:3001/api/members/deleteCollect',
-    //     { product_id: backendData.product_id },
-    //     {
-    //       // 為了跨源存取 cookie
-    //       withCredentials: true,
-    //     }
-    //   );
-    //   console.log(response.data);
-    //   setIsShowC(false);
-    //   if (response.status === 200) {
-    //     console.log('刪除成功');
-    //     setShowTF(true);
-    //     // 重整頁面
-    //     if (redirectTo) {
-    //       setShowTFMsg({ title: '刪除結果', msg: '刪除成功,1秒後跳轉' });
-    //       const timeoutId = setTimeout(() => {
-    //         navigate(redirectTo);
-    //       }, 1000);
-    //     } else {
-    //       setShowTFMsg({ title: '刪除結果', msg: '刪除成功' });
-    //     }
-    //   }
-    // } catch (e) {
-    //   console.log('刪除失敗');
-    //   setShowTFMsg({ title: '刪除結果', msg: '刪除失敗' });
-    //   setShowTF(true);
-    //   console.log(e.response.data.errors);
-    // }
+  function handleDeleteCollect() {
+    if (isLoggedIn) {
+      if (Array.isArray(collectList) && collectList.length > 0) {
+        const isCollectExist = collectList.includes(backendData.product_id);
+        if (isCollectExist) {
+          setCollectList((prev) =>
+            prev.filter((i) => i !== backendData.product_id)
+          );
+
+          setIsShowC(false);
+          console.log('刪除成功');
+          setShowTF(true);
+          // 重整頁面
+          if (redirectTo) {
+            setShowTFMsg({ title: '刪除結果', msg: '刪除成功,1秒後跳轉' });
+            const timeoutId = setTimeout(() => {
+              navigate(redirectTo);
+            }, 1000);
+          } else {
+            setShowTFMsg({ title: '刪除結果', msg: '刪除成功' });
+          }
+        }
+      } else {
+        console.log('刪除失敗');
+        setShowTFMsg({ title: '刪除失敗', msg: '商品不在你的收藏' });
+        setShowTF(true);
+      }
+    } else {
+      setIsShowC(true);
+    }
+    // console.log('collectList', collectList);
   }
   return (
     <Card className={`${style.thisCard} m-0 mx-auto`}>
@@ -246,9 +261,9 @@ function ThisCard(props) {
           ) : (
             <Button
               as={Link}
-              to="/login"
+              // to="/login"
+              onClick={handleLogIn}
               variant="outline-chicofgo-green"
-              onClick={handleClose}
             >
               前往登入
             </Button>
@@ -266,7 +281,7 @@ function ThisCard(props) {
         <Modal.Footer>
           <Container>
             <Row className={`justify-content-between`}>
-              {askDelectShowC ? (
+              {askDelectShowC && isLoggedIn ? (
                 <Col className={`p-0 col-auto`}>
                   <Button variant="danger" onClick={handleDeleteCollect}>
                     刪除收藏
@@ -289,7 +304,8 @@ function ThisCard(props) {
                 <Col className={`pe-0 col-auto`}>
                   <Button
                     as={Link}
-                    to="/login"
+                    // to="/login"
+                    onClick={handleLogIn}
                     variant="outline-chicofgo-green"
                   >
                     前往登入

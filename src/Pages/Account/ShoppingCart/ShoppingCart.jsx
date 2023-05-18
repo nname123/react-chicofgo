@@ -5,32 +5,38 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import ShoppingItem from './Components/ShoppingItem';
 import { Link } from 'react-router-dom';
 import { useShoppingCart } from '../../../Contexts/ShoppingCartProvider';
-import axios from 'axios';
+import { useAuth } from '../../../Contexts/AuthContext';
+
+// import axios from 'axios';
 
 function ShoppingCart(props) {
   const [products, setProducts] = useState([]);
   const [isCheckAll, setIsCheckAll] = useState(false);
-  const { selectProducts, setSelectProducts } = useShoppingCart();
+  const { isLoggedIn, userid } = useAuth();
+  const { selectProducts, setSelectProducts, cartList, setCartList } =
+    useShoppingCart();
+
   useEffect(() => {
-    async function getShoppingCartData() {
-      try {
-        let response = await axios.get(
-          'http://localhost:3001/api/shoppingCarts/shoppingCart',
-          {
-            withCredentials: true,
-          }
-        );
-        // console.log(response.data);
-        setProducts(response.data);
-      } catch (e) {
-        if (e.response.status === 400) {
-          console.log('購物車是空的');
-          // setProducts([]);
-        }
-      }
+    function getShoppingCartData() {
+      // try {
+      // let response = await axios.get(
+      //   'http://localhost:3001/api/shoppingCarts/shoppingCart',
+      //   {
+      //     withCredentials: true,
+      //   }
+      // );
+      // console.log(response.data);
+      // setProducts(response.data);
+      // } catch (e) {
+      //   if (e.response.status === 400) {
+      //     console.log('購物車是空的');
+      //     // setProducts([]);
+      //   }
+      // }
+      setProducts(cartList);
     }
     getShoppingCartData();
-  }, []);
+  }, [cartList]);
 
   useEffect(() => {
     setIsCheckAll((prevIsCheckAll) =>
@@ -76,29 +82,16 @@ function ShoppingCart(props) {
     setSelectProducts(products.filter((product) => product.checked));
   };
 
-  async function handleDeleteProducts(event) {
-    const theCartId = event.currentTarget.value;
-    try {
-      let response = await axios.post(
-        'http://localhost:3001/api/shoppingCarts/deleteShoppingCart',
-        { deleteId: theCartId },
-        {
-          // 為了跨源存取 cookie
-          withCredentials: true,
-        }
-      );
-      console.log(response.data);
-      if (response.status === 200) {
-        setProducts(
-          products.filter((items) => items.shoppingcart_id != theCartId)
+  function handleDeleteProducts(event) {
+    const theCartId = parseInt(event.currentTarget.value, 10);
+    if (isLoggedIn) {
+      if (Array.isArray(cartList) && cartList.length > 0) {
+        const deleteCartList = cartList.filter(
+          (item) => item.shoppingcart_id !== theCartId
         );
-        console.log('刪除成功');
-      }
-    } catch (e) {
-      if (e.response.status === 400) {
-        let allErrors = e.response.data.errors;
-        console.log('刪除失敗');
-        console.log(allErrors);
+        setCartList(deleteCartList);
+        // console.log('刪除成功');
+        return;
       }
     }
   }

@@ -33,33 +33,39 @@ function Checkout(props) {
 
   useEffect(() => {
     setProducts(selectProducts);
-    console.log('送出資料', selectProducts);
-
     // -----------------------------------
-    async function getAccountData() {
-      let response = await axios.get(
-        'http://localhost:3001/api/members/toShoppingcart',
-        {
-          withCredentials: true,
-        }
-      );
+    // async function getAccountData() {
+    // let response = await axios.get(
+    //   'http://localhost:3001/api/members/toShoppingcart',
+    //   {
+    //     withCredentials: true,
+    //   }
+    // );
+    // -----------------------------------
+    let response = {
+      data: {
+        id: 123,
+        name: '王大明',
+        phone: '0987654321',
+        address: '地球',
+      },
+    };
 
-      setMemberInfo({
-        product_id: response.data.id,
-        name: response.data.name,
-        phone: response.data.phone,
-        pay: '',
-        address: response.data.address,
-        send_information: '',
-        bill_id: '',
-        totalPrice: '',
-        status: '1',
-        mail: response.data.email,
-        pay_info: '',
-      });
-      console.log(memberInfo);
-    }
-    getAccountData();
+    setMemberInfo({
+      product_id: response.data.id,
+      name: response.data.name,
+      phone: response.data.phone,
+      pay: '',
+      address: response.data.address,
+      send_information: '',
+      bill_id: '',
+      totalPrice: '',
+      status: '1',
+      mail: response.data.email,
+      pay_info: '',
+    });
+    // console.log(memberInfo);
+    // getAccountData()
     // -----------------------------------
   }, []);
 
@@ -88,8 +94,8 @@ function Checkout(props) {
       0
     ) - coupon;
 
-  // ---下單---(後端還沒接)
-  async function handleSubmit(e) {
+  // ---下單---
+  function handleSubmit(e) {
     e.preventDefault();
     memberInfo.totalPrice = totalPrice;
     memberInfo.discount = coupon;
@@ -99,65 +105,27 @@ function Checkout(props) {
       .join(', ');
 
     memberInfo.quantity = products.map((obj) => obj.quantity).join(', ');
-
     console.log(memberInfo);
+    console.log('products', products);
 
-    try {
-      let response = await axios.post(
-        'http://localhost:3001/api/shoppingCarts/sendOrder',
-        memberInfo,
-        {
-          // 為了跨源存取 cookie
-          withCredentials: true,
-        }
-      );
-      console.log(response.data);
+    // const orderResult = memberInfo.map((obj) => {
+    //   return {
+    //     totalPrice: obj.totalPrice,
+    //     name: obj.name,
+    //     price: obj.price,
+    //     rating: obj.rating,
+    //     detail: newDetailText,
+    //     introduction: newIntroduction,
+    //     type: obj.type,
+    //     place: obj.place,
+    //     product_package: obj.package,
+    //     weight: obj.weight,
+    //     sugar_level: obj.sugar_level,
+    //     roast: obj.roast,
+    //   };
+    // });
 
-      if (response.status === 200) {
-        console.log('更新成功');
-        setShowModal(true);
-        setErrors({
-          nameError: '',
-          name: false,
-          phoneError: '',
-          phone: false,
-          addressError: '',
-          address: false,
-          payError: '',
-          pay: false,
-          bill_idError: '',
-          bill_id: false,
-          send_informationError: '',
-          send_information: false,
-        });
-      }
-    } catch (e) {
-      if (e.response.status === 400) {
-        let allErrors = e.response.data.errors;
-        console.log('下單失敗');
-        console.log(allErrors);
-        let newErrors = {
-          nameError: '',
-          name: false,
-          phoneError: '',
-          phone: false,
-          addressError: '',
-          address: false,
-          payError: '',
-          pay: false,
-          bill_idError: '',
-          bill_id: false,
-          send_informationError: '',
-          send_information: false,
-        };
-        allErrors.forEach((thisError) => {
-          newErrors[thisError.param] = true;
-          newErrors[thisError.param + 'Error'] = thisError.msg;
-        });
-        setErrors(newErrors);
-        // console.log(errors);
-      }
-    }
+    setShowModal(true);
   }
   return (
     <ChContainer
@@ -387,11 +355,21 @@ function Checkout(props) {
                 </Button>
                 <PopupWindow
                   show={showModal}
+                  onclose={() =>
+                    // navigate('/member/orderHistory')
+                    setShowModal(false)
+                  }
+                  title="下單結果"
+                  content="下單成功!"
+                  btnContent="清空購物車"
+                />
+                {/* <PopupWindow
+                  show={showModal}
                   onclose={() => navigate('/member/orderHistory')}
                   title="下單結果"
                   content="下單成功!"
                   btnContent="查看訂單"
-                />
+                /> */}
               </Col>
             </Row>
           </Col>

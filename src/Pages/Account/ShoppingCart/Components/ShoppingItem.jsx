@@ -2,10 +2,11 @@ import { Row, Col, Button, Form, Image, Table, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../../Contexts/AuthContext';
-import axios from 'axios';
+// import axios from 'axios';
 import { BsCaretRightSquareFill, BsCaretLeftSquareFill } from 'react-icons/bs';
 import { FaWindowClose } from 'react-icons/fa';
 import style from './ShoppingItem.module.scss';
+import { useShoppingCart } from '../../../../Contexts/ShoppingCartProvider';
 
 const ShoppingItem = ({
   id,
@@ -21,42 +22,59 @@ const ShoppingItem = ({
   onDeleteClick,
 }) => {
   // 加入收藏
-  const { userid } = useAuth();
+  const { isLoggedIn, userid } = useAuth();
+  const { cartList, setCartList, collectList, setCollectList } =
+    useShoppingCart();
   const [isShowCollect, setIsShowCollect] = useState(false);
   const [showMsgCollect, setShowMsgCollect] = useState('');
   const handleCloseCollect = () => setIsShowCollect(false);
-  async function sendCollect() {
+  function sendCollect() {
     // console.log(id)
-    try {
-      let response = await axios.post(
-        'http://localhost:3001/api/members/sendUserCollect',
-        {
-          product_id: id,
-          member_id: userid,
-          // cartPrice: backendData.price,
-          // cartQuantity: 1,
+    // try {
+    //   let response = await axios.post(
+    //     'http://localhost:3001/api/members/sendUserCollect',
+    //     {
+    //       product_id: id,
+    //       member_id: userid,
+    //       // cartPrice: backendData.price,
+    //       // cartQuantity: 1,
+    //     }
+    //   );
+    //   if (response.data.result === 'ok') {
+    //     setIsShowCollect(true);
+    //     setShowMsgCollect('成功加入收藏');
+    //   } else if (response.data.result === 'been added') {
+    //     setIsShowCollect(true);
+    //     setShowMsgCollect('已加入過收藏囉，看看其他商品吧');
+    //   } else {
+    //     setIsShowCollect(true);
+    //     setShowMsgCollect('加入失敗');
+    //   }
+    //   console.log(response.data);
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    if (isLoggedIn) {
+      if (Array.isArray(collectList) && collectList.length > 0) {
+        const isProductExist = collectList.includes(id);
+        if (isProductExist) {
+          setShowMsgCollect('已加入過收藏囉，看看其他商品吧');
+          setIsShowCollect(true);
+          return;
         }
-      );
-      if (response.data.result === 'ok') {
-        setIsShowCollect(true);
-        setShowMsgCollect('成功加入收藏');
-      } else if (response.data.result === 'been added') {
-        setIsShowCollect(true);
-        setShowMsgCollect('已加入過收藏囉，看看其他商品吧');
-      } else {
-        setIsShowCollect(true);
-        setShowMsgCollect('加入失敗');
       }
-      console.log(response.data);
-    } catch (e) {
-      console.log(e);
+      setCollectList((prev) => [...prev, id]);
+      setShowMsgCollect('成功加入收藏');
+      setIsShowCollect(true);
     }
   }
 
   return (
     <>
       <Row className={`px-1 px-md-4`} key={id}>
-        <Col className={`col-1 d-flex justify-content-center align-items-center`}>
+        <Col
+          className={`col-1 d-flex justify-content-center align-items-center`}
+        >
           <Form.Group className={``}>
             <Form.Check
               type="checkbox"
@@ -88,7 +106,8 @@ const ShoppingItem = ({
               className={`${style.brandArea} col-2 px-0 align-self-start text-center d-none d-md-block `}
             >
               <Image
-                src={`http://localhost:3001/api/images/productImg/coffee_${id}/coffee_${id}-1.png`}
+                // src={`http://localhost:3001/api/images/productImg/coffee_${id}/coffee_${id}-1.png`}
+                src={require(`../../../../Img/ProductsTest/coffee_${id}/coffee_${id}-1.png`)}
                 className={`${style.productPic} `}
               />
               <h2 className={`${style.brandname} m-2 chicofgo-font-700`}>
@@ -177,13 +196,16 @@ const ShoppingItem = ({
         </Col>
       </Row>
       {/* 加入收藏通知 */}
-      <Modal show={isShowCollect} onHide={handleCloseCollect} centered size="sm">
+      <Modal
+        show={isShowCollect}
+        onHide={handleCloseCollect}
+        centered
+        size="sm"
+      >
         <Modal.Header closeButton>
           <Modal.Title className={`fs-5 mx-1`}>加入收藏</Modal.Title>
         </Modal.Header>
-        <Modal.Body className={`mx-1`}>
-          {showMsgCollect}
-        </Modal.Body>
+        <Modal.Body className={`mx-1`}>{showMsgCollect}</Modal.Body>
         <Modal.Footer>
           <Button variant="outline-chicofgo-brown" onClick={handleCloseCollect}>
             關閉

@@ -12,6 +12,9 @@ import ProductDetail from './Pages/Products/ProductDetail/ProductDetailPage';
 import Products from './Pages/Products/Products';
 import Event from './Pages/Event/Event';
 import Coupon from './Pages/Coupon/Coupon';
+import ShoppingCart from './Pages/Account/ShoppingCart/ShoppingCart';
+import Checkout from './Pages/Account/ShoppingCart/Checkout';
+import Member from './Pages/Member';
 
 function App() {
   return (
@@ -34,6 +37,10 @@ function App() {
               </Route>
               <Route path="event" element={<Event />} />
               <Route path="coupon" element={<Coupon />} />
+              <Route path="member" element={<Member />}>
+                <Route path="shoppingcart" element={<ShoppingCart />} />
+                <Route path="checkout" element={<Checkout />} />
+              </Route>
             </Routes>
           </ScrollToTop>
           <Footer />

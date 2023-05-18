@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 function PopupWindow(props) {
   return (
     <>
-      <Modal className="chicofgo-font" show={props.show} onHide={props.show}>
+      <Modal className="chicofgo-font" show={props.show} onHide={props.onclose}>
         <Modal.Header>
           <Modal.Title className="chicofgo-font-700">{props.title}</Modal.Title>
         </Modal.Header>

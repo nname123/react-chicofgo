@@ -17,13 +17,18 @@ function SideBar() {
         className={`${style.SideBarBody} flex-md-column justify-content-center justify-content-md-start flex-nowrap h-100 chicofgo-font`}
         variant=""
       >
-        <Nav.Link as={Link} to="/member" className="my-md-3">
+        <Nav.Link as={Link} to="/member" className="my-md-3 " disabled>
           <p>
             <BsFillPersonFill />
             &thinsp;我的帳號
           </p>
         </Nav.Link>
-        <Nav.Link as={Link} to="/member/orderHistory" className="my-md-3 ">
+        <Nav.Link
+          as={Link}
+          to="/member/orderHistory"
+          className="my-md-3 "
+          disabled
+        >
           <p>
             <FaSearch />
             &thinsp;歷史訂單
@@ -35,13 +40,13 @@ function SideBar() {
             &thinsp;購物清單
           </p>
         </Nav.Link>
-        <Nav.Link as={Link} to="/member/coupons" className="my-md-3 ">
+        <Nav.Link as={Link} to="/member/coupons" className="my-md-3 " disabled>
           <p>
             <RiCoupon2Line />
             &thinsp;我的優惠券
           </p>
         </Nav.Link>
-        <Nav.Link as={Link} to="/member/collect" className="my-md-3 ">
+        <Nav.Link as={Link} to="/member/collect" className="my-md-3 " disabled>
           <p>
             <BsFillBookmarkHeartFill />
             &thinsp;我的收藏

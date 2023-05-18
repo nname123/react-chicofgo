@@ -1,7 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import { Container, Button, Image, Nav, Navbar } from 'react-bootstrap';
 import {
-  BsFillBellFill,
+  // BsFillBellFill,
   BsSuitHeartFill,
   BsFillPersonFill,
   BsFillCartFill,
@@ -9,13 +9,13 @@ import {
 import style from './Navbar.module.scss';
 import { useAuth } from '../../Contexts/AuthContext';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 function ChicofgoNavBar() {
   const [expanded, setExpanded] = useState(false);
   useEffect(() => {
     // 監聽導覽列展開/收合狀態
-    console.log('expanded:', expanded);
+    // console.log('expanded:', expanded);
   }, [expanded]);
 
   const {
@@ -23,21 +23,27 @@ function ChicofgoNavBar() {
     setIsLoggedIn,
     username,
     setUsername,
-    userid,
+    // userid,
     setUserid,
     userRank,
     setUserRank,
   } = useAuth();
-  async function handleLogout() {
+  function handleLogout() {
     // await axios.get('http://localhost:3001/api/auth/logout', {
     //   withCredentials: true,
     // });
-    // setIsLoggedIn(false);
-    // setUserid('');
-    // setUsername('');
-    // setUserRank('');
-    // localStorage.removeItem('MyCoupon');
-    // localStorage.removeItem('productsViewed');
+    setIsLoggedIn(false);
+    setUserid('');
+    setUsername('');
+    setUserRank('');
+    localStorage.removeItem('MyCoupon');
+    localStorage.removeItem('productsViewed');
+  }
+  function handleLogIn() {
+    setIsLoggedIn(true);
+    setUserid('12345');
+    setUsername('王大明');
+    setUserRank('1');
   }
 
   return (
@@ -112,7 +118,7 @@ function ChicofgoNavBar() {
             </Nav.Item>
           </Nav>
 
-          {isLoggedIn && (
+          {isLoggedIn ? (
             <>
               <Nav.Item>
                 <Navbar.Text
@@ -132,6 +138,18 @@ function ChicofgoNavBar() {
                 </Button>
               </Nav.Item>
             </>
+          ) : (
+            <>
+              <Nav.Item>
+                <Button
+                  variant="outline-secondary"
+                  onClick={handleLogIn}
+                  className={`px-3 py-1 me-0 ms-3 ms-md-0 chicofgo-font-70`}
+                >
+                  登入
+                </Button>
+              </Nav.Item>
+            </>
           )}
 
           {/* <Button as={Link} to="/" variant="" className={`mx-1 mb-1`}>
@@ -148,7 +166,7 @@ function ChicofgoNavBar() {
           </Button>
           <Button
             as={Link}
-            to={userRank == '2' ? '/businessOrder' : '/member'}
+            to={parseInt(userRank, 10) === 2 ? '/businessOrder' : '/member'}
             variant=""
             className={`me-1 mb-1`}
             onClick={() => setExpanded(false)}

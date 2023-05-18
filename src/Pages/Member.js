@@ -1,13 +1,31 @@
-import { Outlet, Navigate } from 'react-router-dom';
-import { React, useContext } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { React, useState, useEffect } from 'react';
+import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
 import SideBar from './Account/Components/SideBar';
 import memberBackground from './Account/Components/member_background.png';
 import { useAuth } from '../Contexts/AuthContext';
 function Member() {
-  const { isLoggedIn, userRank } = useAuth();
-  if (!isLoggedIn) return <Navigate to="/login" replace={true} />;
-  if (userRank === '2') return <Navigate to="/businessOrder" replace={true} />;
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+
+  const { isLoggedIn, setIsLoggedIn, setUsername, setUserid, setUserRank } =
+    useAuth();
+
+  function handleLogIn() {
+    setIsLoggedIn(true);
+    setUserid('12345');
+    setUsername('王大明');
+    setUserRank('1');
+    handleClose();
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setShow(true);
+    }
+  }, []);
+
   return (
     <>
       <Container
@@ -29,6 +47,33 @@ function Member() {
           </Col>
         </Row>
       </Container>
+      {/* 提示訊息 */}
+      <Modal
+        size="sm"
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>未登入</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>請先登入</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              navigate(-1);
+              handleClose();
+            }}
+          >
+            返回上一頁
+          </Button>
+          <Button variant="primary" onClick={handleLogIn}>
+            立即登入
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
