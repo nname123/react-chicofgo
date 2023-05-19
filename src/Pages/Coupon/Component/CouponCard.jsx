@@ -14,7 +14,7 @@ function CouponCard(props) {
     // 讀取並檢查某一值是否在陣列中
     const myCoupon = JSON.parse(localStorage.getItem('MyCoupon')) || []; // 先讀取已存在的資料，如果不存在則初始化為空陣列
     const isExist = myCoupon.includes(targetItem); // 檢查該項目是否在陣列中
-    console.log(isExist); // 如果該項目在陣列中，則輸出 true，否則輸出 false
+    // console.log(isExist); // 如果該項目在陣列中，則輸出 true，否則輸出 false
     if (isExist) {
       setBtnText('已領取');
     } else {

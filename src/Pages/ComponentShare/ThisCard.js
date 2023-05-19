@@ -265,7 +265,7 @@ function ThisCard(props) {
               onClick={handleLogIn}
               variant="outline-chicofgo-green"
             >
-              前往登入
+              立即登入
             </Button>
           )}
         </Modal.Footer>

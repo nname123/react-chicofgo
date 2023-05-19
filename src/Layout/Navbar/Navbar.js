@@ -165,8 +165,8 @@ function ChicofgoNavBar() {
             <BsSuitHeartFill />
           </Button>
           <Button
-            as={Link}
-            to={parseInt(userRank, 10) === 2 ? '/businessOrder' : '/member'}
+            // as={Link}
+            // to={parseInt(userRank, 10) === 2 ? '/businessOrder' : '/member'}
             variant=""
             className={`me-1 mb-1`}
             onClick={() => setExpanded(false)}

@@ -15,6 +15,8 @@ import Coupon from './Pages/Coupon/Coupon';
 import ShoppingCart from './Pages/Account/ShoppingCart/ShoppingCart';
 import Checkout from './Pages/Account/ShoppingCart/Checkout';
 import Member from './Pages/Member';
+import Collect from './Pages/Account/Collect/Collect';
+import CollectItem from './Pages/Account/Collect/Component/CollectItem';
 
 function App() {
   return (
@@ -25,6 +27,10 @@ function App() {
           <ScrollToTop>
             <Routes>
               <Route path="home" element={<Home />} />
+              <Route
+                path="refresh"
+                element={<Navigate to={-1} replace={true} />}
+              />
               <Route path="/" element={<Navigate to="home" replace={true} />} />
               <Route path="/products">
                 <Route path=":currentPage" element={<Products />} />
@@ -40,6 +46,15 @@ function App() {
               <Route path="member" element={<Member />}>
                 <Route path="shoppingcart" element={<ShoppingCart />} />
                 <Route path="checkout" element={<Checkout />} />
+                <Route path="collect" element={<Collect />}>
+                  <Route
+                    index
+                    element={
+                      <Navigate to="/member/collect/items" replace={true} />
+                    }
+                  />
+                  <Route path="items" element={<CollectItem />} />
+                </Route>
               </Route>
             </Routes>
           </ScrollToTop>

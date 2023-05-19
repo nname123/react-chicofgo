@@ -46,7 +46,7 @@ function SideBar() {
             &thinsp;我的優惠券
           </p>
         </Nav.Link>
-        <Nav.Link as={Link} to="/member/collect" className="my-md-3 " disabled>
+        <Nav.Link as={Link} to="/member/collect" className="my-md-3 ">
           <p>
             <BsFillBookmarkHeartFill />
             &thinsp;我的收藏

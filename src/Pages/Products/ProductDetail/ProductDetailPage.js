@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useMemo, Fragment, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Path from '../../../Layout/Item/Path/Path';
 import { BsFillReplyFill } from 'react-icons/bs';
 import ShowPic from './Component/ShowPic';
-import axios from 'axios';
-import { useProduct } from '../../../Contexts/ProductProvider';
-import { useMessage } from '../../../Contexts/MessageProvider';
+// import axios from 'axios';
 import { useAuth } from '../../../Contexts/AuthContext';
+import { useShoppingCart } from '../../../Contexts/ShoppingCartProvider';
 import {
   Image,
   Row,
@@ -29,7 +28,17 @@ import MoreCard from '../../ComponentShare/MoreCard';
 import { productList } from '../../../Config/ProductConfig';
 
 const ProductDetail = () => {
-  const { isLoggedIn, userid } = useAuth();
+  const {
+    isLoggedIn,
+    userid,
+    setIsLoggedIn,
+    setUsername,
+    setUserid,
+    setUserRank,
+  } = useAuth();
+  const { cartList, setCartList, collectList, setCollectList } =
+    useShoppingCart();
+
   const [backendData, setBackendData] = useState([]);
   const [backendReview, setBackendReview] = useState([]);
   const [productAmount, setProductAmount] = useState(1);
@@ -90,7 +99,7 @@ const ProductDetail = () => {
     // 撈商品資料
     getProductData();
     // 撈評論資料
-    getProductReview();
+    // getProductReview();
   }, []);
 
   // 0.5秒後自動關掉spinner
@@ -106,7 +115,7 @@ const ProductDetail = () => {
   useEffect(() => {
     setIsLoading(true);
     getProductData();
-    getProductReview();
+    // getProductReview();
   }, [location]);
 
   // 星星製造機
@@ -132,139 +141,127 @@ const ProductDetail = () => {
   }
 
   // 撈商品資料
-  async function getProductData() {
+  function getProductData() {
     const response = productList.find((item) => item.product_id === product_id);
     setBackendData(response);
-    // try {
-    //   let response = await axios.get(
-    //     `http://localhost:3001/api/products/productDetail/${product_id}`
-    //   );
-    //   // console.log(response.data[0]);
-    //   setBackendData(response.data[0]);
-    // } catch (e) {
-    //   if (e.response.status === 400) {
-    //     console.log('後端錯誤');
-    //   }
-    // }
   }
   // 撈評論資料
-  async function getProductReview() {
-    // try {
-    //   let response = await axios.get(
-    //     `http://localhost:3001/api/products/productReview/${product_id}`
-    //   );
-    //   // console.log(response.data.productReview);
-    //   setBackendReview(response.data.productReview);
-    // } catch (e) {
-    //   if (e.response.status === 400) {
-    //     console.log('無資料');
-    //   }
-    // }
-  }
+  // function getProductReview() {
+  // try {
+  //   let response = await axios.get(
+  //     `http://localhost:3001/api/products/productReview/${product_id}`
+  //   );
+  //   // console.log(response.data.productReview);
+  //   setBackendReview(response.data.productReview);
+  // } catch (e) {
+  //   if (e.response.status === 400) {
+  //     console.log('無資料');
+  //   }
+  // }
+  // }
 
   //加入購物車
-  async function sendCart() {
-    // if (isLoggedIn) {
-    //   try {
-    //     let response = await axios.post(
-    //       'http://localhost:3001/api/products/sendCart',
-    //       {
-    //         cartProductId: product_id,
-    //         cartUserId: userid,
-    //         cartPrice: backendData.price,
-    //         cartQuantity: productAmount,
-    //       }
-    //     );
-    //     if (response.data.result === 'ok') {
-    //       setIsShow(true);
-    //       setShowMsg('成功加入購物車');
-    //     } else if (response.data.result === 'been added') {
-    //       setIsShow(true);
-    //       setShowMsg('已加入過購物車囉，看看其他商品吧');
-    //     } else {
-    //       setIsShow(true);
-    //       setShowMsg('加入失敗');
-    //     }
-    //     // console.log('加入購物車', response.data);
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // } else {
-    //   setIsShow(true);
-    // }
+  function sendCart() {
+    if (isLoggedIn) {
+      let newShoppingCartId = 1;
+      if (Array.isArray(cartList) && cartList.length > 0) {
+        const isProductExist = cartList.some(
+          (item) => item.product_id === product_id
+        );
+        if (isProductExist) {
+          setShowMsg('已加入過購物車囉，看看其他商品吧');
+          setIsShow(true);
+          return;
+        }
+        newShoppingCartId = cartList[cartList.length - 1].shoppingcart_id + 1;
+      }
+
+      // 處理規格
+      let string = backendData.detail;
+      let descSubstring = string.substring(
+        string.indexOf('：') + 1,
+        string.indexOf('<br>')
+      );
+      if (descSubstring.length <= 0) {
+        descSubstring = string.substring(0, string.indexOf('<br>'));
+      }
+
+      const newItem = {
+        shoppingcart_id: newShoppingCartId,
+        // 其他屬性設定
+        product_id: backendData.product_id,
+        brandname: backendData.brand,
+        title: backendData.name,
+        desc: descSubstring,
+        quantity: productAmount,
+        price: backendData.price,
+        checked: false,
+      };
+      setCartList((prevCartList) => [...prevCartList, newItem]);
+      setShowMsg('成功加入購物車');
+      setIsShow(true);
+    } else {
+      setIsShow(true);
+    }
   }
   //加入收藏
-  async function sendCollect() {
-    // if (isLoggedIn) {
-    //   try {
-    //     let response = await axios.post(
-    //       'http://localhost:3001/api/members/sendUserCollect',
-    //       {
-    //         product_id: backendData.product_id,
-    //         member_id: userid,
-    //       }
-    //     );
-    //     if (
-    //       response.data.result === 'ok' ||
-    //       response.data.result === 'rejoin'
-    //     ) {
-    //       setAskDelectShowC(false);
-    //       setIsShowC(true);
-    //       setShowMsgC('成功加入收藏');
-    //     } else if (response.data.result === 'been added') {
-    //       setIsShowC(true);
-    //       setAskDelectShowC(true);
-    //       setShowMsgC('已加入過收藏囉，看看其他商品吧');
-    //     } else {
-    //       setAskDelectShowC(false);
-    //       setIsShowC(true);
-    //       setShowMsgC('加入失敗');
-    //     }
-    //     // console.log(response.data);
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // } else {
-    //   setIsShowC(true);
-    // }
+  function sendCollect() {
+    if (isLoggedIn) {
+      if (Array.isArray(collectList) && collectList.length > 0) {
+        const isCollectExist = collectList.includes(backendData.product_id);
+        if (isCollectExist) {
+          setShowMsgC('已加入過收藏囉，看看其他商品吧');
+          setIsShowC(true);
+          setAskDelectShowC(true);
+          return;
+        }
+      }
+
+      setCollectList((prev) => [...prev, backendData.product_id]);
+      setAskDelectShowC(false);
+      setIsShowC(true);
+      setShowMsgC('成功加入收藏');
+      // console.log('collectList', collectList);
+    } else {
+      setIsShowC(true);
+    }
   }
   // 刪除收藏
-  async function handleDeleteCollect() {
-    // try {
-    //   let response = await axios.post(
-    //     'http://localhost:3001/api/members/deleteCollect',
-    //     { product_id: backendData.product_id },
-    //     {
-    //       // 為了跨源存取 cookie
-    //       withCredentials: true,
-    //     }
-    //   );
-    //   // console.log(response.data);
-    //   setIsShowC(false);
-    //   if (response.status === 200) {
-    //     console.log('刪除成功');
-    //     setShowTFMsg({ title: '刪除結果', msg: '刪除成功' });
-    //     setShowTF(true);
-    //   }
-    // } catch (e) {
-    //   console.log('刪除失敗');
-    //   setShowTFMsg({ title: '刪除結果', msg: '刪除失敗' });
-    //   setShowTF(true);
-    //   console.log(e.response.data.errors);
-    // }
+  function handleDeleteCollect() {
+    if (isLoggedIn) {
+      if (Array.isArray(collectList) && collectList.length > 0) {
+        const isCollectExist = collectList.includes(backendData.product_id);
+        if (isCollectExist) {
+          setCollectList((prev) =>
+            prev.filter((i) => i !== backendData.product_id)
+          );
+          setIsShowC(false);
+          console.log('刪除成功');
+          setShowTFMsg({ title: '刪除結果', msg: '刪除成功' });
+          setShowTF(true);
+        }
+      } else {
+        console.log('刪除失敗');
+        setShowTFMsg({ title: '刪除失敗', msg: '商品不在你的收藏' });
+        setShowTF(true);
+      }
+    } else {
+      setIsShowC(true);
+    }
+  }
+
+  // 登入
+  function handleLogIn() {
+    setIsLoggedIn(true);
+    setUserid('12345');
+    setUsername('王大明');
+    setUserRank('1');
+    handleClose();
+    handleCloseC();
   }
 
   return (
     <>
-      {/* {isLoading ? (
-        <>
-          <div className="d-flex justify-content-center">
-            <div className="spinner-border text-success" role="status">
-              <span className="sr-only"></span>
-            </div>
-          </div>
-        </>
-      ) : ( */}
       <Container>
         <Row className={`justify-content-center`}>
           <Col className="col-10 mb-5">
@@ -511,12 +508,12 @@ const ProductDetail = () => {
                           ''
                         ) : (
                           <Button
-                            as={Link}
-                            to="/login"
+                            // as={Link}
+                            // to="/login"
                             variant="outline-chicofgo-green"
-                            onClick={handleClose}
+                            onClick={handleLogIn}
                           >
-                            前往登入
+                            立刻登入
                           </Button>
                         )}
                       </Modal.Footer>
@@ -567,12 +564,12 @@ const ProductDetail = () => {
                             ) : (
                               <Col className={`pe-0 col-auto`}>
                                 <Button
-                                  as={Link}
-                                  to="/login"
+                                  // as={Link}
+                                  // to="/login"
                                   variant="outline-chicofgo-green"
-                                  onClick={handleCloseC}
+                                  onClick={handleLogIn}
                                 >
-                                  前往登入
+                                  立刻登入
                                 </Button>
                               </Col>
                             )}

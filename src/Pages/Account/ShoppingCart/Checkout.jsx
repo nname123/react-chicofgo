@@ -1,4 +1,4 @@
-import { Row, Col, Button, Form, InputGroup } from 'react-bootstrap';
+import { Row, Col, Button, Form, InputGroup, Table } from 'react-bootstrap';
 import ChContainer from '../../ComponentShare/ChContainer';
 import style from './ShoppingCart.module.scss';
 import React, { useState, useEffect } from 'react';
@@ -12,7 +12,7 @@ function Checkout(props) {
   const navigate = useNavigate();
   // ---勾選商品---
   const [products, setProducts] = useState([]);
-  const { selectProducts, setSelectProducts } = useShoppingCart();
+  const { setCartList, selectProducts, setSelectProducts } = useShoppingCart();
   // ---會員資料---
   const [memberInfo, setMemberInfo] = useState({});
   const [errors, setErrors] = useState({
@@ -30,6 +30,7 @@ function Checkout(props) {
     send_information: false,
   });
   const [showModal, setShowModal] = useState(false);
+  let result = {};
 
   useEffect(() => {
     setProducts(selectProducts);
@@ -87,7 +88,7 @@ function Checkout(props) {
     0
   );
 
-  // ---訂單加總---
+  // ---訂單加總(扣優惠券)---
   const totalPrice =
     products.reduce(
       (sum, product) => sum + product.price * product.quantity,
@@ -100,33 +101,16 @@ function Checkout(props) {
     memberInfo.totalPrice = totalPrice;
     memberInfo.discount = coupon;
     memberInfo.price = thisprice;
-    memberInfo.shoppingcart_id = products
-      .map((obj) => obj.shoppingcart_id)
-      .join(', ');
-
-    memberInfo.quantity = products.map((obj) => obj.quantity).join(', ');
-    console.log(memberInfo);
-    console.log('products', products);
-
-    // const orderResult = memberInfo.map((obj) => {
-    //   return {
-    //     totalPrice: obj.totalPrice,
-    //     name: obj.name,
-    //     price: obj.price,
-    //     rating: obj.rating,
-    //     detail: newDetailText,
-    //     introduction: newIntroduction,
-    //     type: obj.type,
-    //     place: obj.place,
-    //     product_package: obj.package,
-    //     weight: obj.weight,
-    //     sugar_level: obj.sugar_level,
-    //     roast: obj.roast,
-    //   };
-    // });
-
+    memberInfo.totalAmount = products.length;
     setShowModal(true);
   }
+  // 清空購物車
+  function clearCart() {
+    setShowModal(false);
+    setCartList([]);
+    navigate('/products');
+  }
+
   return (
     <ChContainer
       ChClass={'chicofgo-font'}
@@ -355,12 +339,41 @@ function Checkout(props) {
                 </Button>
                 <PopupWindow
                   show={showModal}
-                  onclose={() =>
-                    // navigate('/member/orderHistory')
-                    setShowModal(false)
-                  }
+                  onclose={clearCart}
                   title="下單結果"
-                  content="下單成功!"
+                  content={
+                    <Table striped bordered hover size="sm">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>商品名稱</th>
+                          <th>數量</th>
+                          <th>價格</th>
+                          <th>小計</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {products.map((item, index) => (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td className={`${style.truncate}`}>
+                              {item.title}
+                            </td>
+                            <td>{item.quantity}</td>
+                            <td>{item.price}</td>
+                            <td>{item.price * item.quantity}</td>
+                          </tr>
+                        ))}
+                        <tr>
+                          <td colSpan={2}>商品數量:</td>
+                          <td>{memberInfo.totalAmount}</td>
+
+                          <td>總金額:</td>
+                          <td>{memberInfo.totalPrice}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  }
                   btnContent="清空購物車"
                 />
                 {/* <PopupWindow

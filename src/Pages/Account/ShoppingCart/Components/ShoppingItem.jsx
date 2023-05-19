@@ -23,8 +23,7 @@ const ShoppingItem = ({
 }) => {
   // 加入收藏
   const { isLoggedIn, userid } = useAuth();
-  const { cartList, setCartList, collectList, setCollectList } =
-    useShoppingCart();
+  const { collectList, setCollectList } = useShoppingCart();
   const [isShowCollect, setIsShowCollect] = useState(false);
   const [showMsgCollect, setShowMsgCollect] = useState('');
   const handleCloseCollect = () => setIsShowCollect(false);
