@@ -435,7 +435,7 @@ const ProductDetail = () => {
                               </InputGroup>
                             </span>
                           </Col>
-                          <Col className="w-100 d-inline d-md-none d-lg-inline"></Col>
+                          <Col className="w-100  d-none d-lg-inline"></Col>
                         </Row>
                         <Row className={`my-2`}>
                           <Col
@@ -615,7 +615,7 @@ const ProductDetail = () => {
                 相關產品
               </Col>
               <Col
-                className={`d-flex justify-content-center flex-wrap mx-0 mt-3 mb-5`}
+                className={`d-flex justify-content-center flex-wrap mx-0 mt-3 mb-5 px-0 px-md-2`}
               >
                 <MoreCard amount={12} />
                 {/* <MoreCard amount={12} product_id={[9, 11, 15, 18, 22]} /> */}

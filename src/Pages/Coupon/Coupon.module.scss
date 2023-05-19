@@ -16,6 +16,7 @@ $font-family_2: 'Noto Sans TC', sans-serif;
   background: rgb(166, 155, 132);
   border-radius: 30px;
   padding: 20px 30px;
+  max-width: 726px;
 }
 
 .oneAreaTitle {
@@ -37,10 +38,12 @@ $font-family_2: 'Noto Sans TC', sans-serif;
     color: $color_3;
   }
 }
+.twoArea {
+  max-width: 726px;
+}
 
 .borderBottom {
   border-bottom: 12px rgb(166, 155, 132) dashed;
-  max-width: 1800px;
 }
 
 .lightBg {

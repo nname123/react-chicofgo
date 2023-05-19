@@ -15,7 +15,7 @@ function Coupon() {
             <h1 className={`my-3`}>早鳥辦年貨馬上領券! 下單更優惠!</h1>
           </Row>
           <Row
-            className={`${style.oneArea}  row-cols-2 row-cols-md-3 g-1 g-md-3 `}
+            className={`${style.oneArea}  row-cols-2 row-cols-md-3 g-1 g-md-3 mx-auto`}
           >
             <Col>
               <CouponCard
@@ -66,12 +66,12 @@ function Coupon() {
       <Row
         className={`justify-content-center ${style.borderBottom} ${style.lightBg}`}
       >
-        <Col className={`${style.mainPage}`} xs={11} md={8} xl={6} xxl={5}>
+        <Col className={`${style.mainPage} `} xs={11} md={8} xl={6} xxl={5}>
           <Row className={`${style.oneAreaTitle} `}>
             <h1 className={`my-3`}>新春限定優惠券</h1>
           </Row>
           <Row
-            className={`${style.twoArea} row-cols-1 row-cols-lg-2 g-1 g-lg-3`}
+            className={`${style.twoArea} row-cols-1 row-cols-lg-2 g-1 g-lg-3 mx-auto`}
           >
             <Col>
               <CouponCard2
@@ -125,7 +125,7 @@ function Coupon() {
             <h1 className={`my-3`}>聖誕優惠券</h1>
           </Row>
           <Row
-            className={`${style.oneArea} row-cols-2 row-cols-md-3 g-1 g-md-3 `}
+            className={`${style.oneArea} row-cols-2 row-cols-md-3 g-1 g-md-3 mx-auto`}
           >
             <Col>
               <CouponCard
@@ -181,7 +181,7 @@ function Coupon() {
             <h1 className={`my-3`}>指定商城優惠券</h1>
           </Row>
           <Row
-            className={`${style.twoArea}  row-cols-1 row-cols-lg-2 g-1 g-lg-3`}
+            className={`${style.twoArea}  row-cols-1 row-cols-lg-2 g-1 g-lg-3 mx-auto`}
           >
             <Col>
               <CouponCard2

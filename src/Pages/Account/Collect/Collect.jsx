@@ -21,42 +21,10 @@ function Collect() {
             </h1>
           </Col>
         </Row>
-        {/* <Row
-          className={`chicofgo_gray justify-content-center text-center px-4 pt-2 mb-3`}
-        >
-          <Col className={`col-4`}>
-            <Row>
-              <Col className={`col `}>
-                商家
-                <Nav
-                  variant="tabs"
-                  defaultActiveKey="/member/collect/items"
-                  className={`justify-content-evenly`}
-                >
-                  <Nav.Item>
-                    <Nav.Link as={NavLink} to="/member/collect/shop">
-                      <p className={`px-3 py-0 my-0 chicofgo_dark_font`}>
-                        商家
-                      </p>
-                    </Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link as={NavLink} to="/member/collect/items">
-                      <p className={`px-3 py-0 my-0 chicofgo_dark_font`}>
-                        商品
-                      </p>
-                    </Nav.Link>
-                  </Nav.Item>
-                </Nav>
-              </Col>
-              <Col className={`col `}>商品</Col>
-            </Row>
-          </Col>
-        </Row> */}
+
         <Row
           className={`${style.collectAreaHeight} mb-5 justify-content-center`}
         >
-          {/* <CollectItem /> */}
           <Outlet />
         </Row>
       </Col>

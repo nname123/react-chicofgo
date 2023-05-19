@@ -1,6 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  HashRouter,
+} from 'react-router-dom';
 import Home from './Pages/Home/Home';
 import AllProviders from './Contexts/AllProviders';
 import Navbar from './Layout/Navbar/Navbar';
@@ -21,7 +27,7 @@ import CollectItem from './Pages/Account/Collect/Component/CollectItem';
 function App() {
   return (
     <>
-      <BrowserRouter basename="/react-chicofgo">
+      <HashRouter>
         <AllProviders>
           <Navbar />
           <ScrollToTop>
@@ -60,7 +66,7 @@ function App() {
           </ScrollToTop>
           <Footer />
         </AllProviders>
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 }

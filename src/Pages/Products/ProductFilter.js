@@ -170,6 +170,8 @@ function ProductFilter() {
   ];
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState([]);
+  const [redDot, setRedDot] = useState(false);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [checkedMap, setCheckedMap] = useState({
@@ -216,76 +218,61 @@ function ProductFilter() {
 
   useEffect(() => {
     const { theSearches, ...otherCategories } = chooseCategory;
+    setRedDot(false);
     if (theSearches.length > 0 && theSearches.toString() !== '') {
       setTheSearch(theSearches);
+      setRedDot(true);
     }
-    if (Object.values(otherCategories).every((arr) => arr.length === 0)) {
-      // console.log('沒篩選資料，除了theSearch以外');
-      return;
-    }
-    // 若有資料，則執行以下程式碼
-    const {
-      brands = [],
-      packages = [],
-      origins = [],
-      types = [],
-      theStyles = [],
-    } = otherCategories;
+    if (!Object.values(otherCategories).every((arr) => arr.length === 0)) {
+      // 若有資料，則執行以下程式碼
+      setRedDot(true);
+      const {
+        brands = [],
+        packages = [],
+        origins = [],
+        types = [],
+        theStyles = [],
+      } = otherCategories;
 
-    const initialFilterData = {
-      brands: brands.reduce((acc, brand) => ({ ...acc, [brand]: true }), {}),
-      packages: packages.reduce((acc, item) => ({ ...acc, [item]: true }), {}),
-      origins: origins.reduce(
-        (acc, origin) => ({ ...acc, [origin]: true }),
-        {}
-      ),
-      types: types.reduce((acc, type) => ({ ...acc, [type]: true }), {}),
-      theStyles: theStyles.reduce(
-        (acc, theStyle) => ({ ...acc, [theStyle]: true }),
-        {}
-      ),
-    };
-    setCheckedMap(initialFilterData);
-    let openItem = [];
-    if (brands.length > 0) {
-      openItem.push('0');
+      const initialFilterData = {
+        brands: brands.reduce((acc, brand) => ({ ...acc, [brand]: true }), {}),
+        packages: packages.reduce(
+          (acc, item) => ({ ...acc, [item]: true }),
+          {}
+        ),
+        origins: origins.reduce(
+          (acc, origin) => ({ ...acc, [origin]: true }),
+          {}
+        ),
+        types: types.reduce((acc, type) => ({ ...acc, [type]: true }), {}),
+        theStyles: theStyles.reduce(
+          (acc, theStyle) => ({ ...acc, [theStyle]: true }),
+          {}
+        ),
+      };
+      setCheckedMap(initialFilterData);
+      let openItem = [];
+      if (brands.length > 0) {
+        openItem.push('0');
+      }
+      if (types.length > 0) {
+        openItem.push('1');
+      }
+      if (packages.length > 0) {
+        openItem.push('2');
+      }
+      if (origins.length > 0) {
+        openItem.push('3');
+      }
+      if (theStyles.length > 0) {
+        openItem.push('4');
+      }
+      setOpen(openItem);
     }
-    if (types.length > 0) {
-      openItem.push('1');
-    }
-    if (packages.length > 0) {
-      openItem.push('2');
-    }
-    if (origins.length > 0) {
-      openItem.push('3');
-    }
-    if (theStyles.length > 0) {
-      openItem.push('4');
-    }
-    setOpen(openItem);
   }, [show]);
 
   return (
-    <Container
-    // style={{ position: 'sticky', top: '65px' }}
-    >
-      {/* <Row>
-        <Col className="col-auto justify-content-center p-0 ">
-          <Nav
-            variant="pills"
-            defaultActiveKey="/home"
-            className="flex-column p-0 my-1"
-          >
-            <Nav.Item>
-              <Nav.Link onClick={handleShow} className="fs-2 my-2 bg-light p-3">
-                <div className="d-flex">
-                  <MdManageSearch />
-                </div>
-              </Nav.Link>
-            </Nav.Item>
-          </Nav>
-        </Col>
-      </Row> */}
+    <Container>
       <Button
         onClick={handleShow}
         variant="chicofgo-brown"
@@ -294,6 +281,13 @@ function ProductFilter() {
       >
         <span className=" chicofgo_white_font ">
           <FaSearch />
+        </span>
+        <span
+          className={`${
+            !redDot && 'visually-hidden'
+          } position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle`}
+        >
+          <span className={`visually-hidden`}>Search alerts</span>
         </span>
       </Button>
 

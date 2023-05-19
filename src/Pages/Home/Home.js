@@ -31,7 +31,7 @@ function Home() {
   const randomNumbersArray = getRandomNumbers([], 42);
   return (
     <Container fluid>
-      <Row className={`p-0 justify-content-center ${style.homePage}`}>
+      <Row className={`p-0 justify-content-center ${style.homePage} mx-auto`}>
         <Col xl={12} xxl={10}>
           <Carousels
             showImg={['Carousels-1.png', 'Carousels-2.png', 'Carousels-3.png']}
@@ -202,7 +202,7 @@ function Home() {
       </Row>
 
       <Row
-        className={`${style.pageTwo} ${style.homePage} justify-content-center`}
+        className={`${style.pageTwo} ${style.homePage} justify-content-center mx-auto`}
       >
         <Col>
           <Row>
@@ -327,7 +327,7 @@ function Home() {
           </Row>
         </Col>
       </Row>
-      <Row className={`justify-content-center ${style.homePage}`}>
+      <Row className={`justify-content-center ${style.homePage} mx-auto`}>
         <Col>
           <Row>
             <Col className={`${style.pageTitle2} text-center my-5 `}>
@@ -436,7 +436,7 @@ function Home() {
           </Row>
         </Col>
       </Row>
-      <Row className={`justify-content-center ${style.homePage}`}>
+      <Row className={`justify-content-center ${style.homePage} mx-auto`}>
         <Col>
           <Row>
             <Col className={`${style.pageTitle} text-center my-5`}>
