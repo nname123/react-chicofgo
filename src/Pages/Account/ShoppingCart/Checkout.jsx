@@ -101,7 +101,12 @@ function Checkout(props) {
     memberInfo.totalPrice = totalPrice;
     memberInfo.discount = coupon;
     memberInfo.price = thisprice;
-    memberInfo.totalAmount = products.length;
+    // memberInfo.totalAmount = products.length;
+    memberInfo.totalAmount = products.reduce(
+      (total, product) => total + product.quantity,
+      0
+    );
+    console.log('products', products);
     setShowModal(true);
   }
   // 清空購物車
