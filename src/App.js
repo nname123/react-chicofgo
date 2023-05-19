@@ -21,7 +21,7 @@ import CollectItem from './Pages/Account/Collect/Component/CollectItem';
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename="/react-chicofgo">
         <AllProviders>
           <Navbar />
           <ScrollToTop>
