@@ -8,13 +8,11 @@ const Products = () => {
   return (
     <Container fluid>
       <Row className="justify-content-evenly">
-        <Col className="col-auto bg-light bg-gradient shadow-sm me-auto">
-          <ProductFilter />
-        </Col>
         <Col className="w-100">
           <List />
         </Col>
       </Row>
+      <ProductFilter />
     </Container>
   );
 };

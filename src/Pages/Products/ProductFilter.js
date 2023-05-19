@@ -13,7 +13,7 @@ import {
   Nav,
 } from 'react-bootstrap';
 import { useProduct } from '../../Contexts/ProductProvider';
-import { MdManageSearch } from 'react-icons/md';
+import { FaSearch } from 'react-icons/fa';
 
 function ProductFilter() {
   const { chooseCategory, setChooseCategory } = useProduct();
@@ -183,7 +183,7 @@ function ProductFilter() {
   const [theSearch, setTheSearch] = useState('');
   const handleInputChange = (event) => {
     // console.log('輸入', event.target.value);
-    setTheSearch(event.target.value);
+    setTheSearch(event.target.value.trim());
   };
   const handleCheck = (event) => {
     const {
@@ -216,7 +216,7 @@ function ProductFilter() {
 
   useEffect(() => {
     const { theSearches, ...otherCategories } = chooseCategory;
-    if (theSearches.length > 0) {
+    if (theSearches.length > 0 && theSearches.toString() !== '') {
       setTheSearch(theSearches);
     }
     if (Object.values(otherCategories).every((arr) => arr.length === 0)) {
@@ -266,9 +266,11 @@ function ProductFilter() {
   }, [show]);
 
   return (
-    <Container style={{ position: 'sticky', top: '65px' }}>
-      <Row>
-        <Col className="justify-content-center p-0 ">
+    <Container
+    // style={{ position: 'sticky', top: '65px' }}
+    >
+      {/* <Row>
+        <Col className="col-auto justify-content-center p-0 ">
           <Nav
             variant="pills"
             defaultActiveKey="/home"
@@ -283,7 +285,17 @@ function ProductFilter() {
             </Nav.Item>
           </Nav>
         </Col>
-      </Row>
+      </Row> */}
+      <Button
+        onClick={handleShow}
+        variant="chicofgo-brown"
+        style={{ position: 'fixed', bottom: '20px', left: '20px' }}
+        className={`rounded-2 shadow text-center`}
+      >
+        <span className=" chicofgo_white_font ">
+          <FaSearch />
+        </span>
+      </Button>
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton className="bg-light">
@@ -323,12 +335,13 @@ function ProductFilter() {
                 variant="outline-secondary"
                 id="button-addon2"
                 value={theSearch}
-                onClick={() =>
+                onClick={() => {
                   setChooseCategory((prev) => ({
                     ...prev,
                     theSearches: [theSearch],
-                  }))
-                }
+                  }));
+                  handleClose();
+                }}
               >
                 Search
               </Button>

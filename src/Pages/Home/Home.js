@@ -164,12 +164,26 @@ function Home() {
                   <p className="position-absolute top-0 start-2 translate-middle ">
                     為您推薦
                   </p>
-                  <CardListS
-                    className={`start-5 position-relative`}
-                    // showImg={[99, 100, 101, 102, 103, 104, 105, 106]}
-                    showImg={randomNumbersArray.slice(0, 8)}
-                    cardHeight={'153px'}
-                  />
+                  <Row className={`row-cols-1 row-cols-md-2 `}>
+                    <Col>
+                      <Row className={`row-cols-2  row-cols-lg-4 g-2`}>
+                        <CardListS
+                          className={`start-5 position-relative`}
+                          showImg={randomNumbersArray.slice(0, 4)}
+                          cardHeight={'153px'}
+                        />
+                      </Row>
+                    </Col>
+                    <Col>
+                      <Row className={`row-cols-2  row-cols-lg-4 g-2`}>
+                        <CardListS
+                          className={`start-5 position-relative`}
+                          showImg={randomNumbersArray.slice(4, 8)}
+                          cardHeight={'153px'}
+                        />
+                      </Row>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               <Row>
@@ -205,19 +219,16 @@ function Home() {
               >
                 New!
               </p>
-              <CardListS
-                // className={`start-5`}
-                showImg={randomNumbersArray.slice(16, 17)}
-                cardHeight={'153px'}
-              />
-              <CardListS
-                // className={`start-5`}
-                showImg={randomNumbersArray.slice(17, 18)}
-                cardHeight={'153px'}
-              />
+              <Row className={`row-cols-1 g-5 `}>
+                <CardListS
+                  // className={`start-5`}
+                  showImg={randomNumbersArray.slice(16, 18)}
+                  cardHeight={'153px'}
+                />
+              </Row>
             </Col>
             <Col
-              className={`${style.pageTwoBg} col-md-6 justify-content-center text-center px-5`}
+              className={`${style.pageTwoBg} col-md-8 col-xl-6 justify-content-center text-center px-5`}
             >
               <span className={`${style.subTitle} mb-md-5`}>
                 新春優惠價!眾多折扣商品
@@ -225,10 +236,12 @@ function Home() {
                 開放搶購!
               </span>
               <div className={`py-3 my-xl-5`}>
-                <CardListS
-                  showImg={randomNumbersArray.slice(18, 22)}
-                  cardHeight={'153px'}
-                />
+                <Row className={`row-cols-2 row-cols-md-4 g-2`}>
+                  <CardListS
+                    showImg={randomNumbersArray.slice(18, 22)}
+                    cardHeight={'153px'}
+                  />
+                </Row>
               </div>
               <Button
                 variant="chicofgo-green"
@@ -242,7 +255,7 @@ function Home() {
           </Row>
           <Row className={`justify-content-center`}>
             <Col
-              className={`${style.pageTwoBg} col-md-6 position-relative text-center`}
+              className={`${style.pageTwoBg} col-md-8 col-xl-6 position-relative text-center`}
             >
               <h5
                 className={`position-absolute top-0 start-2 translate-middle `}
@@ -256,15 +269,12 @@ function Home() {
                 <br />
                 開放搶購!
               </span>
-              <CardListS
-                showImg={randomNumbersArray.slice(22, 26)}
-                cardHeight={'153px'}
-              />
-              <CardListS
-                // className={`start-5`}
-                showImg={randomNumbersArray.slice(26, 30)}
-                cardHeight={'153px'}
-              />
+              <Row className={`row-cols-2 row-cols-md-4 g-2`}>
+                <CardListS
+                  showImg={randomNumbersArray.slice(22, 30)}
+                  cardHeight={'153px'}
+                />
+              </Row>
               <Button
                 variant="chicofgo-green"
                 className={` mt-5 mb-3 px-5 py-1 chicofgo-font-700 rounded-5`}
@@ -283,14 +293,12 @@ function Home() {
                 立即購買!
               </span>
               <div className={`pt-4 pb-4`}>
-                <CardListS
-                  showImg={randomNumbersArray.slice(30, 32)}
-                  cardHeight={'153px'}
-                />
-                <CardListS
-                  showImg={randomNumbersArray.slice(32, 34)}
-                  cardHeight={'153px'}
-                />
+                <Row className={`row-cols-2 g-5`}>
+                  <CardListS
+                    showImg={randomNumbersArray.slice(30, 34)}
+                    cardHeight={'153px'}
+                  />
+                </Row>
               </div>
               <Button
                 variant="chicofgo-green"

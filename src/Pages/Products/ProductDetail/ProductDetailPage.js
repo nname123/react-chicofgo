@@ -284,6 +284,7 @@ const ProductDetail = () => {
                   </div>
                 ) : (
                   <Path
+                    fontStyle=" chicofgo_brown_font"
                     pathObj={{
                       path: [
                         '商品列表',
@@ -300,7 +301,7 @@ const ProductDetail = () => {
                   />
                 )}
               </Col>
-              <Col className={`col-auto align-self-end`}>
+              <Col className={`col-auto align-self-end ms-auto`}>
                 <Button
                   variant="chicofgo-brown"
                   className={`d-flex align-items-center chicofgo_white_font`}
@@ -315,7 +316,7 @@ const ProductDetail = () => {
             <Row>
               <Col>
                 <Row className={`chicofgo_gray p-4 mt-2 rounded-4 shadow`}>
-                  <Col className={`col-6`}>
+                  <Col className={`col-12 col-md-6`}>
                     <div
                       style={{ position: 'sticky', top: '100px' }}
                       className={`mb-2`}
@@ -335,7 +336,9 @@ const ProductDetail = () => {
                       )}
                     </div>
                   </Col>
-                  <Col className={`${style.textArea} col-6 chicofgo-font px-4`}>
+                  <Col
+                    className={`${style.textArea} col-12 col-md-6 chicofgo-font px-4`}
+                  >
                     {isLoading ? (
                       <div
                         className="d-flex justify-content-center align-items-center"
@@ -432,7 +435,7 @@ const ProductDetail = () => {
                               </InputGroup>
                             </span>
                           </Col>
-                          <Col className="w-100 d-none d-lg-inline"></Col>
+                          <Col className="w-100 d-inline d-md-none d-lg-inline"></Col>
                         </Row>
                         <Row className={`my-2`}>
                           <Col
