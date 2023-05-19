@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "//react-chicofgo/static/css/main.089d6ad2.css",
-    "main.js": "//react-chicofgo/static/js/main.82a9f782.js",
+    "main.js": "//react-chicofgo/static/js/main.f407b7c3.js",
     "static/js/787.52c61750.chunk.js": "//react-chicofgo/static/js/787.52c61750.chunk.js",
     "static/media/Event2-3.png": "//react-chicofgo/static/media/Event2-3.8afed4aaed1598620ae3.png",
     "static/media/Event2-1.png": "//react-chicofgo/static/media/Event2-1.1f4f1a1d91efb392c3c9.png",
@@ -206,11 +206,11 @@
     "static/media/youtube.svg": "//react-chicofgo/static/media/youtube.dff237b6324a617a4f07ffdc2d9b9b7b.svg",
     "static/media/facebook.svg": "//react-chicofgo/static/media/facebook.9b444da5aa9a56243f8c6dde17a22a43.svg",
     "main.089d6ad2.css.map": "//react-chicofgo/static/css/main.089d6ad2.css.map",
-    "main.82a9f782.js.map": "//react-chicofgo/static/js/main.82a9f782.js.map",
+    "main.f407b7c3.js.map": "//react-chicofgo/static/js/main.f407b7c3.js.map",
     "787.52c61750.chunk.js.map": "//react-chicofgo/static/js/787.52c61750.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.089d6ad2.css",
-    "static/js/main.82a9f782.js"
+    "static/js/main.f407b7c3.js"
   ]
 }
