@@ -216,6 +216,9 @@ function ProductFilter() {
 
   useEffect(() => {
     const { theSearches, ...otherCategories } = chooseCategory;
+    if (theSearches.length > 0) {
+      setTheSearch(theSearches);
+    }
     if (Object.values(otherCategories).every((arr) => arr.length === 0)) {
       // console.log('沒篩選資料，除了theSearch以外');
       return;
