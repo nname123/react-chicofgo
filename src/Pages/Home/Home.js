@@ -6,17 +6,26 @@ import { Button, Nav, Image, Col, Row, Container } from 'react-bootstrap';
 import MoreCard from '../ComponentShare/MoreCard';
 import { useProduct } from '../../Contexts/ProductProvider';
 import { useShoppingCart } from '../../Contexts/ShoppingCartProvider';
-import React from 'react';
+import { React, useEffect, useState } from 'react';
+import PopupWindow from '../ComponentShare/PopupWindow';
 
 function Home() {
   const { chooseCategory, setChooseCategory } = useProduct();
   const { selectProducts, setSelectProducts } = useShoppingCart();
+  const [showWelcomeMsg, setShowWelcomeMsg] = useState(false);
 
   const navigate = useNavigate();
   let localData = JSON.parse(localStorage.getItem('productsViewed')) || [
     { userId: 99999, productsViewed: [] },
   ];
   let productsViewedItem = localData[0].productsViewed || [];
+
+  useEffect(() => {
+    const WcMsg = localStorage.getItem('WcMsg');
+    if (WcMsg !== 'true') {
+      setShowWelcomeMsg(true);
+    }
+  }, []);
 
   function getRandomNumbers(numbers, length) {
     const randomNumber = Math.floor(Math.random() * 50) + 1;
@@ -472,6 +481,24 @@ function Home() {
           {/* ----------------------------------- */}
         </Col>
       </Row>
+      <PopupWindow
+        show={showWelcomeMsg}
+        onclose={() => {
+          localStorage.setItem('WcMsg', 'true');
+          setShowWelcomeMsg(false);
+        }}
+        title="請注意"
+        content={
+          <>
+            此內容僅做為個人前端網頁練習使用，
+            <br />
+            如有侵權情形，請
+            <a href="mailto:ryanworktw123@gmai1.com">來信告知</a>
+            ，我將盡快刪除相關內容。
+          </>
+        }
+        btnContent="確定"
+      />
     </Container>
   );
 }
