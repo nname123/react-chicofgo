@@ -487,13 +487,13 @@ function Home() {
           localStorage.setItem('WcMsg', 'true');
           setShowWelcomeMsg(false);
         }}
-        title="請注意"
+        title="練習作品"
         content={
           <>
-            此內容僅做為個人前端網頁練習使用，
+            此網頁所有內容僅做為個人前端網頁練習使用，
             <br />
-            如有侵權情形，請
-            <a href="mailto:ryanworktw123@gmai1.com">來信告知</a>
+            如有侵權，請
+            <a href="mailto:ryanworktw123@gmail.com">來信告知</a>
             ，我將盡快刪除相關內容。
           </>
         }

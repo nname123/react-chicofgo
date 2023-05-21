@@ -13,7 +13,8 @@ import {
   Nav,
 } from 'react-bootstrap';
 import { useProduct } from '../../Contexts/ProductProvider';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaSearchMinus } from 'react-icons/fa';
+import { RiFilterLine, RiFilterOffLine } from 'react-icons/ri';
 
 function ProductFilter() {
   const { chooseCategory, setChooseCategory } = useProduct();
@@ -191,7 +192,6 @@ function ProductFilter() {
     const {
       dataset: { type, name },
     } = event.target;
-    // console.log('setCheckedMap', checkedMap);
     setCheckedMap((prevState) => {
       const newCheckedMap = { ...prevState };
 
@@ -202,7 +202,6 @@ function ProductFilter() {
       }
       return newCheckedMap;
     });
-    // console.log('setChooseCategory', chooseCategory);
     setChooseCategory((prev) => {
       const prevList = prev[type] || [];
       const newList = event.target.checked
@@ -213,7 +212,6 @@ function ProductFilter() {
         [type]: newList,
       };
     });
-    // console.log('checkedMap', checkedMap);
   };
 
   useEffect(() => {
@@ -274,20 +272,45 @@ function ProductFilter() {
   return (
     <Container>
       <Button
+        onClick={() => {
+          setChooseCategory({
+            brands: [],
+            types: [],
+            packages: [],
+            origins: [],
+            theStyles: [],
+            theSearches: [],
+          });
+          setCheckedMap({
+            brands: {},
+            types: {},
+            packages: {},
+            origins: {},
+            theStyles: {},
+          });
+          setRedDot(false);
+        }}
+        variant="chicofgo-khaki"
+        style={{ position: 'fixed', bottom: '70px', left: '20px' }}
+        className={`${!redDot && 'visually-hidden'} rounded-2 shadow p-2`}
+      >
+        <span className=" chicofgo_white_font fs-4 ">
+          <RiFilterOffLine
+            className={`d-flex align-items-center justify-content-center`}
+          />
+        </span>
+      </Button>
+
+      <Button
         onClick={handleShow}
         variant="chicofgo-brown"
         style={{ position: 'fixed', bottom: '20px', left: '20px' }}
-        className={`rounded-2 shadow text-center`}
+        className={`rounded-2 shadow p-2`}
       >
-        <span className=" chicofgo_white_font ">
-          <FaSearch />
-        </span>
-        <span
-          className={`${
-            !redDot && 'visually-hidden'
-          } position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle`}
-        >
-          <span className={`visually-hidden`}>Search alerts</span>
+        <span className={`chicofgo_white_font fs-4 `}>
+          <RiFilterLine
+            className={`d-flex align-items-center justify-content-center`}
+          />
         </span>
       </Button>
 
