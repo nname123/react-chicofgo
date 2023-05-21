@@ -308,8 +308,10 @@ const ProductDetail = () => {
                   as={Link}
                   to="/products"
                 >
-                  <BsFillReplyFill />
-                  回商品列表
+                  <BsFillReplyFill className={`fs-5`} />
+                  <span className={`chicofgo_white_font d-none d-sm-inline`}>
+                    回商品列表
+                  </span>
                 </Button>
               </Col>
             </Row>

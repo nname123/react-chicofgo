@@ -40,14 +40,24 @@
     font-size: 0.75rem;
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 360px) {
+  .truncate {
+    max-width: 70px;
+  }
+}
+@media (min-width: 360px) {
+  .truncate {
+    max-width: 100px;
+  }
+}
+@media (min-width: 420px) {
   .truncate {
     max-width: 160px;
   }
 }
 @media (min-width: 768px) {
   .truncate {
-    max-width: 320px;
+    max-width: 300px;
   }
 }
 @media (min-width: 992px) {
