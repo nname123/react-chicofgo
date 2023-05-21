@@ -23,11 +23,9 @@ const Footer = () => {
           onClick={handleClick}
           variant="chicofgo-green"
           style={{ position: 'fixed', bottom: '20px', right: '20px' }}
-          className={`rounded-2 shadow p-2 fs-4`}
+          className={`rounded-2 shadow chicofgo_white_font fs-5 `}
         >
-          <FaArrowUp
-            className={`d-flex align-items-center justify-content-center`}
-          />
+          <FaArrowUp />
         </Button>
         <Row className={``}>
           <Col

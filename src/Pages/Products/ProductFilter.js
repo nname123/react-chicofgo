@@ -291,27 +291,21 @@ function ProductFilter() {
           setRedDot(false);
         }}
         variant="chicofgo-khaki"
-        style={{ position: 'fixed', bottom: '70px', left: '20px' }}
-        className={`${!redDot && 'visually-hidden'} rounded-2 shadow p-2`}
+        style={{ position: 'fixed', bottom: '80px', left: '20px' }}
+        className={`${
+          !redDot && 'visually-hidden'
+        } rounded-2 shadow chicofgo_white_font fs-5 `}
       >
-        <span className=" chicofgo_white_font fs-4 ">
-          <RiFilterOffLine
-            className={`d-flex align-items-center justify-content-center`}
-          />
-        </span>
+        <RiFilterOffLine />
       </Button>
 
       <Button
         onClick={handleShow}
         variant="chicofgo-brown"
         style={{ position: 'fixed', bottom: '20px', left: '20px' }}
-        className={`rounded-2 shadow p-2`}
+        className={`rounded-2 shadow chicofgo_white_font fs-5`}
       >
-        <span className={`chicofgo_white_font fs-4 `}>
-          <RiFilterLine
-            className={`d-flex align-items-center justify-content-center`}
-          />
-        </span>
+        <RiFilterLine />
       </Button>
 
       <Offcanvas show={show} onHide={handleClose}>
