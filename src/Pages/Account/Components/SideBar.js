@@ -14,7 +14,7 @@ function SideBar() {
     <>
       <Nav
         defaultActiveKey="/member"
-        className={`${style.SideBarBody} flex-md-column justify-content-center justify-content-md-start flex-nowrap h-100 chicofgo-font`}
+        className={`${style.SideBarBody} flex-md-column justify-content-center justify-content-md-start flex-nowrap h-100 chicofgo-font px-md-4`}
         variant=""
       >
         <Nav.Link as={Link} to="/member" className="my-md-3 " disabled>

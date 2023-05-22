@@ -38,11 +38,11 @@ function Member() {
         }}
       >
         <Row>
-          <Col xs={12} md={2} className={`p-0`}>
+          <Col className={`p-0 col-12 col-md-auto`}>
             {/* <MemberSideBar /> */}
             <SideBar />
           </Col>
-          <Col xs={12} md={10}>
+          <Col className={`w-100`}>
             <Outlet />
           </Col>
         </Row>
